@@ -1,0 +1,16 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: true
+
+quote:
+  pricing:
+    default-price: 500.0
+
+logging:
+  level:
+    org:
+      springframework: DEBUG
+      slf4j: DEBUG
+      testcontainers: DEBUG
