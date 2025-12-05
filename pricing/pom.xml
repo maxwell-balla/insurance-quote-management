@@ -28,6 +28,16 @@
         <testcontainers.version>1.21.3</testcontainers.version>
         <org.mapstruct.version>1.6.3</org.mapstruct.version>
         <openapi-generator.version>7.2.0</openapi-generator.version>
+        <assertj-bom.version>3.27.6</assertj-bom.version>
+        <junit-bom.version>6.0.0</junit-bom.version>
+        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
+        <maven-enforcer-plugin>3.0.0</maven-enforcer-plugin>
+        <springdoc-openapi-starter-webmvc-ui.version>2.8.5</springdoc-openapi-starter-webmvc-ui.version>
+        <jackson-databind-nullable.version>0.2.8</jackson-databind-nullable.version>
+        <swagger-annotations.version>2.2.40</swagger-annotations.version>
+        <spring-boot-testcontainers.version>4.0.0-RC1</spring-boot-testcontainers.version>
+        <junit-jupiter.version>1.21.3</junit-jupiter.version>
+        <lombok.version>1.18.42</lombok.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -67,14 +77,14 @@
             <dependency>
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
-                <version>6.0.0</version>
+                <version>${junit-bom.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-bom</artifactId>
-                <version>3.27.6</version>
+                <version>${assertj-bom.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -107,7 +117,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.14.1</version>
+                    <version>${maven-compiler-plugin.version}</version>
                     <configuration>
                         <source>${maven.compiler.source}</source>
                         <target>${maven.compiler.target}</target>
