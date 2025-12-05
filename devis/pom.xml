@@ -25,6 +25,8 @@
         <java.version>25</java.version>
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>
+        <maven-surefire-plugin>3.5.4</maven-surefire-plugin>
+        <maven-enforcer-plugin>3.0.0</maven-enforcer-plugin>
         <junit-bom.version>6.0.1</junit-bom.version>
         <openapi-generator.version>7.2.0</openapi-generator.version>
         <cucumber.version>7.31.0</cucumber.version>
@@ -32,6 +34,15 @@
         <org.mapstruct.version>1.6.3</org.mapstruct.version>
         <lombok.version>1.18.42</lombok.version>
         <spring-cloud.version>2025.1.0</spring-cloud.version>
+        <keycloak-admin-client.version>26.0.7</keycloak-admin-client.version>
+        <wiremock-standalone.version>3.13.2</wiremock-standalone.version>
+        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
+        <lombok.version>1.18.42</lombok.version>
+        <junit-jupiter-testconatiners.version>1.21.3</junit-jupiter-testconatiners.version>
+        <spring-boot-testcontainers.version>4.0.0-RC1</spring-boot-testcontainers.version>
+        <swagger-annotations.version>2.2.40</swagger-annotations.version>
+        <jackson-databind-nullable.version>0.2.8</jackson-databind-nullable.version>
+        <springdoc-openapi-starter-webmvc-ui.version>2.8.5</springdoc-openapi-starter-webmvc-ui.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
