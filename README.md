@@ -23,7 +23,7 @@ Le systeme permet a un agent d'assurance de creer des devis pour ses clients. Le
 ### Devis (Quote)
 - Le **capital** doit etre strictement positif
 - La **duree** doit etre strictement positive (en jours)
-- L'**age** du client doit etre compris entre 0 et 120 ans
+- L'**age** du client doit etre compris entre 18 et 90 ans
 - Le **tarif** doit etre strictement positif
 - Types de produits disponibles : `AUTO`, `HEALTH`
 - Statuts possibles : `CREATED`, `VALIDATED`, `EXPIRED`, `ERROR`

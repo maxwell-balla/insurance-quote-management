@@ -34,30 +34,24 @@ class CreateQuoteTest {
     @Test
     @DisplayName("should create quote with tariff of Pricing Service")
     void shouldCreateQuote() {
-        // Given
         var cmd = new CreateQuoteRequest(CUSTOMER_ID, ProductType.AUTO, new Profil(AGE), CAPITAL, DURATION);
         var expectedSnapshot = new QuoteSnapshot(QUOTE_ID, CUSTOMER_ID, ProductType.AUTO, AGE, CAPITAL, DURATION, Status.CREATED, TARIF);
-
-        // When
-        createQuoteUseCase.execute(cmd);
-
-        // Then
-        assertThat(quoteRepo.allSnapshots()).containsExactly(expectedSnapshot);
+        
+        whenCreatingQuote(cmd);
+        
+        thenQuoteWasCreated(expectedSnapshot);
     }
 
     @Test
     @DisplayName("should create quote with default tariff because Service is not available")
     void shouldCreateQuoteWithDefaultTariff() {
-        // Given
         var cmd = new CreateQuoteRequest(CUSTOMER_ID, ProductType.AUTO, new Profil(AGE), CAPITAL, DURATION);
         var expectedSnapshot = new QuoteSnapshot(QUOTE_ID, CUSTOMER_ID, ProductType.AUTO, AGE, CAPITAL, DURATION, Status.CREATED, DEFAULT_TARIF);
         systemPricing.enableFallback();
-
-        // When
-        createQuoteUseCase.execute(cmd);
-
-        // Then
-        assertThat(quoteRepo.allSnapshots()).containsExactly(expectedSnapshot);
+        
+        whenCreatingQuote(cmd);
+        
+        thenQuoteWasCreated(expectedSnapshot);
     }
 
     @Test
@@ -65,8 +59,7 @@ class CreateQuoteTest {
     void shouldThrowErrorWhenCustomerIdIsNull() {
         var cmd = new CreateQuoteRequest(null, ProductType.AUTO, new Profil(AGE), CAPITAL, DURATION);
 
-        assertThatThrownBy(() -> createQuoteUseCase.execute(cmd))
-                .isInstanceOf(NullPointerException.class);
+        thenQuoteIsNotCreatedWithNullElement(cmd);
     }
 
     @Test
@@ -74,8 +67,7 @@ class CreateQuoteTest {
     void shouldThrowErrorWhenProductTypeIsNull() {
         var cmd = new CreateQuoteRequest(CUSTOMER_ID, null, new Profil(AGE), CAPITAL, DURATION);
 
-        assertThatThrownBy(() -> createQuoteUseCase.execute(cmd))
-                .isInstanceOf(NullPointerException.class);
+        thenQuoteIsNotCreatedWithNullElement(cmd);
     }
 
     @Test
@@ -83,8 +75,7 @@ class CreateQuoteTest {
     void shouldThrowErrorWhenCapitalIsZero() {
         var cmd = new CreateQuoteRequest(CUSTOMER_ID, ProductType.AUTO, new Profil(AGE), 0, DURATION);
 
-        assertThatThrownBy(() -> createQuoteUseCase.execute(cmd))
-                .isInstanceOf(IllegalArgumentException.class);
+        whenAndThenQuoteIsNotCreatedWithIllegal(cmd);
     }
 
     @Test
@@ -92,8 +83,7 @@ class CreateQuoteTest {
     void shouldThrowErrorWhenCapitalIsNegative() {
         var cmd = new CreateQuoteRequest(CUSTOMER_ID, ProductType.AUTO, new Profil(AGE), -100, DURATION);
 
-        assertThatThrownBy(() -> createQuoteUseCase.execute(cmd))
-                .isInstanceOf(IllegalArgumentException.class);
+        whenAndThenQuoteIsNotCreatedWithIllegal(cmd);
     }
 
     @Test
@@ -101,8 +91,7 @@ class CreateQuoteTest {
     void shouldThrowErrorWhenDurationIsZero() {
         var cmd = new CreateQuoteRequest(CUSTOMER_ID, ProductType.AUTO, new Profil(AGE), CAPITAL, 0);
 
-        assertThatThrownBy(() -> createQuoteUseCase.execute(cmd))
-                .isInstanceOf(IllegalArgumentException.class);
+        whenAndThenQuoteIsNotCreatedWithIllegal(cmd);
     }
 
     @Test
@@ -110,24 +99,39 @@ class CreateQuoteTest {
     void shouldThrowErrorWhenDurationIsNegative() {
         var cmd = new CreateQuoteRequest(CUSTOMER_ID, ProductType.AUTO, new Profil(AGE), CAPITAL, -1);
 
-        assertThatThrownBy(() -> createQuoteUseCase.execute(cmd))
-                .isInstanceOf(IllegalArgumentException.class);
+        whenAndThenQuoteIsNotCreatedWithIllegal(cmd);
     }
 
     @Test
-    @DisplayName("should throw error when age is negative")
-    void shouldThrowErrorWhenAgeIsNegative() {
-        var cmd = new CreateQuoteRequest(CUSTOMER_ID, ProductType.AUTO, new Profil(-1), CAPITAL, DURATION);
+    @DisplayName("should throw error when age is under 18")
+    void shouldThrowErrorWhenAgeIsUnder18() {
+        var cmd = new CreateQuoteRequest(CUSTOMER_ID, ProductType.AUTO, new Profil(17), CAPITAL, DURATION);
 
-        assertThatThrownBy(() -> createQuoteUseCase.execute(cmd))
-                .isInstanceOf(IllegalArgumentException.class);
+        whenAndThenQuoteIsNotCreatedWithIllegal(cmd);
     }
 
     @Test
-    @DisplayName("should throw error when age is over 120")
-    void shouldThrowErrorWhenAgeIsOver120() {
-        var cmd = new CreateQuoteRequest(CUSTOMER_ID, ProductType.AUTO, new Profil(121), CAPITAL, DURATION);
+    @DisplayName("should throw error when age is over 90")
+    void shouldThrowErrorWhenAgeIsOver90() {
+        var cmd = new CreateQuoteRequest(CUSTOMER_ID, ProductType.AUTO, new Profil(91), CAPITAL, DURATION);
 
+        whenAndThenQuoteIsNotCreatedWithIllegal(cmd);
+    }
+
+    private void thenQuoteIsNotCreatedWithNullElement(CreateQuoteRequest cmd) {
+        assertThatThrownBy(() -> createQuoteUseCase.execute(cmd))
+                .isInstanceOf(NullPointerException.class);
+    }
+
+    private void whenCreatingQuote(CreateQuoteRequest cmd) {
+        createQuoteUseCase.execute(cmd);
+    }
+
+    private void thenQuoteWasCreated(QuoteSnapshot expectedSnapshot) {
+        assertThat(quoteRepo.allSnapshots()).containsExactly(expectedSnapshot);
+    }
+
+    private void whenAndThenQuoteIsNotCreatedWithIllegal(CreateQuoteRequest cmd) {
         assertThatThrownBy(() -> createQuoteUseCase.execute(cmd))
                 .isInstanceOf(IllegalArgumentException.class);
     }
