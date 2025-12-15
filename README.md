@@ -7,7 +7,7 @@ Systeme de gestion de devis d'assurance construit avec l'Architecture Hexagonale
 Ce projet est un playground pour explorer les bonnes pratiques de developpement logiciel :
 - **Architecture Hexagonale** : Separation stricte entre le domaine metier et les details techniques
 - **Domain-Driven Design** : Modelisation du domaine avec des bounded contexts distincts
-- **Test-Driven Development** : Tests unitaires avec des fakes, tests E2E avec Cucumber
+- **Test-Driven Development** : Tests unitaires avec des fakes, tests de composants avec Cucumber
 
 Le systeme permet a un agent d'assurance de creer des devis pour ses clients. Le tarif est calcule par un service de pricing externe, avec un mecanisme de fallback si le service est indisponible.
 
@@ -23,7 +23,7 @@ Le systeme permet a un agent d'assurance de creer des devis pour ses clients. Le
 ### Devis (Quote)
 - Le **capital** doit etre strictement positif
 - La **duree** doit etre strictement positive (en jours)
-- L'**age** du client doit etre compris entre 18 et 120 ans
+- L'**age** du client doit etre compris entre 0 et 120 ans
 - Le **tarif** doit etre strictement positif
 - Types de produits disponibles : `AUTO`, `HEALTH`
 - Statuts possibles : `CREATED`, `VALIDATED`, `EXPIRED`, `ERROR`
@@ -47,7 +47,7 @@ Les modules core n'ont aucune dependance framework - garanti par Maven Enforcer.
 
 ## Prerequis
 
-- Java 25
+- Java 21
 - Maven 3.9+
 - Docker (pour Testcontainers)
 
@@ -77,9 +77,11 @@ cd pricing/starter-pricing
 # Tests unitaires
 ./mvnw test
 
-# Tests E2E (Cucumber + Testcontainers)
+# Tests de composants (Cucumber + Testcontainers + WireMock)
 ./mvnw test -pl starter-devis
 ```
+
+> **Note** : Les tests dans `starter-devis` sont des tests de composants, pas des tests E2E. Les services externes (ex: Pricing) sont stubbes avec WireMock.
 
 ## Documentation API
 
@@ -89,7 +91,7 @@ Specifications OpenAPI :
 
 ## Stack technique
 
-- Java 25, Spring Boot 4.0
+- Java 21, Spring Boot 4, Spring Framework 7
 - PostgreSQL, MongoDB
 - Keycloak (authentification)
-- Cucumber, Testcontainers, WireMock (tests)
+- Cucumber, Testcontainers, WireMock (tests de composants)

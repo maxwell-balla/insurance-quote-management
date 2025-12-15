@@ -1,4 +1,4 @@
-package com.playground.core_devis.utils;
+package com.playground.core_devis.unit.usecase;
 
 import com.playground.core_devis.domain.model.Quote;
 import com.playground.core_devis.domain.model.QuoteSnapshot;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.playground.core_devis.utils.TestConstantDevis.QUOTE_ID;
+import static com.playground.core_devis.unit.usecase.TestConstantDevis.QUOTE_ID;
 
 public class FakeQuoteRepository implements QuoteRepositoryPort {
 

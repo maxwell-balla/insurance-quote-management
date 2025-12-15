@@ -1,12 +1,12 @@
-package com.playground.core_devis.utils;
+package com.playground.core_devis.unit.usecase;
 
 import com.playground.core_devis.domain.model.Pricing;
 import com.playground.core_devis.domain.model.ProductType;
 import com.playground.core_devis.domain.model.Profil;
 import com.playground.core_devis.port.spi.PricingPort;
 
-import static com.playground.core_devis.utils.TestConstantDevis.DEFAULT_TARIF;
-import static com.playground.core_devis.utils.TestConstantDevis.TARIF;
+import static com.playground.core_devis.unit.usecase.TestConstantDevis.DEFAULT_TARIF;
+import static com.playground.core_devis.unit.usecase.TestConstantDevis.TARIF;
 
 public class FakeSystemPricing implements PricingPort {
 

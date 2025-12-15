@@ -1,4 +1,4 @@
-package com.playground.core_devis.utils;
+package com.playground.core_devis.unit.usecase;
 
 import com.playground.core_devis.port.spi.UnitOfWorkPort;
 
