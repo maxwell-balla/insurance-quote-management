@@ -1,7 +1,5 @@
 package com.playground.core_devis.domain.model;
 
-import com.playground.core_devis.usecase.createquote.CreateQuoteRequest;
-
 import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
@@ -17,59 +15,40 @@ public class Quote {
     private int age;
     private BigDecimal tarif;
 
-    public static Quote of(CreateQuoteRequest cmd, BigDecimal tarif) {
-        return new Quote(cmd.capital(), cmd.duration(), Status.CREATED, cmd.customerId(), cmd.productType(), cmd.profil().age(), tarif);
+    public static Quote create(UUID customerId, ProductType productType, int age,
+                               double capital, int duration, BigDecimal tarif) {
+        return new Quote(capital, duration, Status.CREATED, customerId, productType, age, tarif);
     }
 
-    // @Getter
-    public UUID getId() {
-        return id;
+    public Quote withId(UUID id) {
+        return new Quote(id, this.capital, this.duration, this.status,
+                this.customerId, this.productType, this.age, this.tarif);
     }
 
-    public double getCapital() {
-        return capital;
+    public QuoteSnapshot snapshot() {
+        return new QuoteSnapshot(id, customerId, productType, age, capital, duration, status, tarif);
     }
 
-    public int getDuration() {
-        return duration;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public UUID getCustomerId() {
-        return customerId;
-    }
-
-    public ProductType getProductType() {
-        return productType;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public BigDecimal getTarif() {
-        return tarif;
-    }
-
-    // @Setter
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     // @EqualsAndHashCode
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Quote quote = (Quote) o;
-        return Double.compare(getCapital(), quote.getCapital()) == 0 && getDuration() == quote.getDuration() && getAge() == quote.getAge() && Objects.equals(getId(), quote.getId()) && getStatus() == quote.getStatus() && Objects.equals(getCustomerId(), quote.getCustomerId()) && getProductType() == quote.getProductType() && Objects.equals(getTarif(), quote.getTarif());
+        return Double.compare(this.capital, quote.capital) == 0
+                && this.duration == quote.duration
+                && this.age == quote.age
+                && Objects.equals(this.id, quote.id)
+                && this.status == quote.status
+                && Objects.equals(this.customerId, quote.customerId)
+                && this.productType == quote.productType
+                && Objects.equals(this.tarif, quote.tarif);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getCapital(), getDuration(), getStatus(), getCustomerId(), getProductType(), getAge(), getTarif());
+        return Objects.hash(this.id, this.capital, this.duration, this.status,
+                this.customerId, this.productType, this.age, this.tarif);
     }
 
     // Constructor
@@ -99,12 +78,26 @@ public class Quote {
         this.tarif = tarif;
     }
 
-    public Quote(double capital, int duration, Status status, java.util.UUID customerId, ProductType productType, int age, BigDecimal tarif) {
+    private Quote(double capital, int duration, Status status, UUID customerId, ProductType productType, int age, BigDecimal tarif) {
+        this.customerId = Objects.requireNonNull(customerId, "Customer id must not be null");
+        this.productType = Objects.requireNonNull(productType, "Product type must not be null");
+        this.status = Objects.requireNonNull(status, "Status must not be null");
+
+        if (capital <= 0) {
+            throw new IllegalArgumentException("Capital must be positive");
+        }
+        if (duration <= 0) {
+            throw new IllegalArgumentException("Duration must be positive");
+        }
+        if (age < 0 || age > 120) {
+            throw new IllegalArgumentException("Age must be between 0 and 120");
+        }
+        if (tarif == null || tarif.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Tarif must be positive");
+        }
+
         this.capital = capital;
         this.duration = duration;
-        this.status = status;
-        this.customerId = customerId;
-        this.productType = productType;
         this.age = age;
         this.tarif = tarif;
     }

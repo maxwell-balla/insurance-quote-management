@@ -1,6 +1,7 @@
 package com.playground.adapter_devis.entity;
 
 import com.playground.core_devis.domain.model.ProductType;
+import com.playground.core_devis.domain.model.QuoteSnapshot;
 import com.playground.core_devis.domain.model.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -46,4 +47,30 @@ public class QuoteEntity {
 
     @Column(name = "tarif", nullable = false)
     private BigDecimal tarif;
+
+    public static QuoteEntity fromSnapshot(QuoteSnapshot snapshot) {
+        return new QuoteEntity(
+                snapshot.id(),
+                snapshot.capital(),
+                snapshot.duration(),
+                snapshot.status(),
+                snapshot.customerId(),
+                snapshot.productType(),
+                snapshot.age(),
+                snapshot.tarif()
+        );
+    }
+
+    public QuoteSnapshot toSnapshot() {
+        return new QuoteSnapshot(
+                id,
+                customerId,
+                productType,
+                age,
+                capital,
+                duration,
+                status,
+                tarif
+        );
+    }
 }

@@ -22,9 +22,9 @@
     </modules>
 
     <properties>
-        <java.version>25</java.version>
-        <maven.compiler.source>25</maven.compiler.source>
-        <maven.compiler.target>25</maven.compiler.target>
+        <java.version>21</java.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <maven-surefire-plugin>3.5.4</maven-surefire-plugin>
         <maven-enforcer-plugin>3.0.0</maven-enforcer-plugin>
         <junit-bom.version>6.0.1</junit-bom.version>

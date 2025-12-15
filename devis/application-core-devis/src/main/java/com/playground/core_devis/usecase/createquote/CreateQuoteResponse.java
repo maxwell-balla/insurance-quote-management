@@ -2,7 +2,7 @@ package com.playground.core_devis.usecase.createquote;
 
 import com.playground.core_devis.domain.model.ProductType;
 import com.playground.core_devis.domain.model.Profil;
-import com.playground.core_devis.domain.model.Quote;
+import com.playground.core_devis.domain.model.QuoteSnapshot;
 import com.playground.core_devis.domain.model.Status;
 
 import java.math.BigDecimal;
@@ -18,16 +18,16 @@ public record CreateQuoteResponse(
         Status status,
         BigDecimal tarif
 ) {
-    public static CreateQuoteResponse of(UUID quoteId, Quote quote) {
+    public static CreateQuoteResponse fromSnapshot(QuoteSnapshot snapshot) {
         return new CreateQuoteResponse(
-                quoteId,
-                quote.getCustomerId(),
-                quote.getProductType(),
-                new Profil(quote.getAge()),
-                quote.getCapital(),
-                quote.getDuration(),
-                quote.getStatus(),
-                quote.getTarif()
+                snapshot.id(),
+                snapshot.customerId(),
+                snapshot.productType(),
+                new Profil(snapshot.age()),
+                snapshot.capital(),
+                snapshot.duration(),
+                snapshot.status(),
+                snapshot.tarif()
         );
     }
 }

@@ -1,27 +1,27 @@
 package com.playground.core_devis.utils;
 
 import com.playground.core_devis.domain.model.Quote;
+import com.playground.core_devis.domain.model.QuoteSnapshot;
 import com.playground.core_devis.port.spi.QuoteRepositoryPort;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.List;
 
 import static com.playground.core_devis.utils.TestConstantDevis.QUOTE_ID;
 
 public class FakeQuoteRepository implements QuoteRepositoryPort {
 
-    private final Map<UUID, Quote> quoteByIds = new HashMap<>();
+    private final List<QuoteSnapshot> savedSnapshots = new ArrayList<>();
 
-    public Collection<Quote> all() {
-        return quoteByIds.values();
+    public Collection<QuoteSnapshot> allSnapshots() {
+        return savedSnapshots;
     }
 
     @Override
-    public UUID save(Quote Quote) {
-        Quote.setId(QUOTE_ID);
-        quoteByIds.put(QUOTE_ID, Quote);
-        return Quote.getId();
+    public QuoteSnapshot save(Quote quote) {
+        var snapshot = quote.withId(QUOTE_ID).snapshot();
+        savedSnapshots.add(snapshot);
+        return snapshot;
     }
 }

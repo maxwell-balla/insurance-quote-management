@@ -4,7 +4,7 @@ import com.playground.core_devis.utils.FakeQuoteRepository;
 import com.playground.core_devis.utils.FakeSystemPricing;
 import com.playground.core_devis.domain.model.ProductType;
 import com.playground.core_devis.domain.model.Profil;
-import com.playground.core_devis.domain.model.Quote;
+import com.playground.core_devis.domain.model.QuoteSnapshot;
 import com.playground.core_devis.domain.model.Status;
 import com.playground.core_devis.utils.FakeUnitOfWork;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,13 +33,13 @@ class CreateQuoteTest {
     void shouldCreateQuote() {
         // Given
         var cmd = new CreateQuoteRequest(CUSTOMER_ID, ProductType.AUTO, new Profil(AGE), CAPITAL, DURATION);
-        var quote = new Quote(QUOTE_ID, CAPITAL, DURATION, Status.CREATED, CUSTOMER_ID, ProductType.AUTO, AGE, TARIF);
+        var expectedSnapshot = new QuoteSnapshot(QUOTE_ID, CUSTOMER_ID, ProductType.AUTO, AGE, CAPITAL, DURATION, Status.CREATED, TARIF);
 
         // When
         createQuoteUseCase.execute(cmd);
 
         // Then
-        assertThat(quoteRepo.all()).containsExactly(quote);
+        assertThat(quoteRepo.allSnapshots()).containsExactly(expectedSnapshot);
     }
 
     @Test
@@ -47,13 +47,13 @@ class CreateQuoteTest {
     void shouldCreateQuoteWithDefaultTariff() {
         // Given
         var cmd = new CreateQuoteRequest(CUSTOMER_ID, ProductType.AUTO, new Profil(AGE), CAPITAL, DURATION);
-        var quote = new Quote(QUOTE_ID, CAPITAL, DURATION, Status.CREATED, CUSTOMER_ID, ProductType.AUTO, AGE, DEFAULT_TARIF);
+        var expectedSnapshot = new QuoteSnapshot(QUOTE_ID, CUSTOMER_ID, ProductType.AUTO, AGE, CAPITAL, DURATION, Status.CREATED, DEFAULT_TARIF);
         systemPricing.enableFallback();
 
         // When
         createQuoteUseCase.execute(cmd);
 
         // Then
-        assertThat(quoteRepo.all()).containsExactly(quote);
+        assertThat(quoteRepo.allSnapshots()).containsExactly(expectedSnapshot);
     }
 }
