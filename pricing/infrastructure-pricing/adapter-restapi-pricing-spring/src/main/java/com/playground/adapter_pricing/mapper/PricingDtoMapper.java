@@ -17,7 +17,7 @@ public interface PricingDtoMapper {
 
     PricingDtoMapper INSTANCE = Mappers.getMapper(PricingDtoMapper.class);
 
-    @Mapping(target = "profile", expression = "java(new Profile(age))")
+    @Mapping(target = "profil", expression = "java(new Profil(age))")
     GetTarifRequest mapToGetTarifQuery(ProductType productType, Integer age);
 
     @Mapping(target = "tarif", source = "tarif")

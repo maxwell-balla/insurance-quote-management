@@ -69,6 +69,30 @@ Quote quote = Quote.create(customerId, productType, age, capital, duration, tari
 QuoteSnapshot savedSnapshot = quoteRepoPort.save(quote);
 ```
 
+### Get Tarif
+
+Permet de récupérer le tarif pour un type de produit et un profil client donné.
+
+#### Get Tarif Workflow
+
+```java
+// 1. Clean Architecture: Request enters through Primary Adapter (Controller)
+@GetMapping("/v1/pricing")
+public ResponseEntity<GetPricingResponse> getTarif(ProductType productType, Integer age)
+
+// 2. Clean Architecture: Request mapped to UseCase Request
+GetTarifRequest request = PricingDtoMapper.INSTANCE.mapToGetTarifQuery(productType, age);
+
+// 3. Clean Architecture: UseCase orchestrates the business logic
+getTarifUseCase.execute(request);
+
+// 4. DDD: Domain Model (Price) created with business rules
+Price price = Price.of(productType, profil);
+
+// 5. Clean Architecture: Secondary Port (PricingRepositoryPort) retrieves tariff
+BigDecimal tariff = pricingRepo.getTarif(productType, profil);
+```
+
 ## Architecture
 
 Ce projet suit l'**Architecture Hexagonale (Ports & Adapters)** avec une separation stricte :

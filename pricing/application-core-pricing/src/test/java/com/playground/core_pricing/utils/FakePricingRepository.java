@@ -2,7 +2,7 @@ package com.playground.core_pricing.utils;
 
 import com.playground.core_pricing.domain.model.Price;
 import com.playground.core_pricing.domain.model.ProductType;
-import com.playground.core_pricing.domain.model.Profile;
+import com.playground.core_pricing.domain.model.Profil;
 import com.playground.core_pricing.port.spi.PricingRepositoryPort;
 
 import java.math.BigDecimal;
@@ -18,16 +18,22 @@ public class FakePricingRepository implements PricingRepositoryPort {
     private final Map<UUID, Price> priceByIds = new HashMap<>();
 
     @Override
-    public Optional<BigDecimal> getTarif(ProductType productType, Profile profile) {
+    public Optional<BigDecimal> getTarif(ProductType productType, Profil profil) {
         return priceByIds.values().stream()
                 .filter(price -> price.getProductType().equals(productType))
-                .filter(price -> price.getProfile().equals(profile))
+                .filter(price -> price.getProfil().equals(profil))
                 .findFirst()
                 .map(Price::getTarif);
     }
 
-    public void feedPrice () {
-        var price = new Price(PRICE_ID, TARIF, ProductType.AUTO, new Profile(AGE));
+    public void feedPrice() {
+        var price = new Price(PRICE_ID, TARIF, ProductType.AUTO, new Profil(AGE));
         priceByIds.put(PRICE_ID, price);
+    }
+
+    public void feedPriceWithAge(int age) {
+        var priceId = UUID.randomUUID();
+        var price = new Price(priceId, TARIF, ProductType.AUTO, new Profil(age));
+        priceByIds.put(priceId, price);
     }
 }

@@ -8,9 +8,9 @@ public class Price {
     private UUID priceId;
     private BigDecimal tarif;
     private ProductType productType;
-    private Profile profile;
+    private Profil profil;
 
-    public Price(UUID priceId, BigDecimal tarif, ProductType productType, Profile profile) {
+    public Price(UUID priceId, BigDecimal tarif, ProductType productType, Profil profil) {
         if (productType == null) {
             throw new IllegalArgumentException("Product type can not be null");
         }
@@ -21,15 +21,15 @@ public class Price {
         this.priceId = priceId;
         this.tarif = tarif;
         this.productType = productType;
-        this.profile = profile;
+        this.profil = profil;
     }
 
-    public Price(ProductType productType, Profile profile) {
-        this(UUID.randomUUID(), null, productType, profile);
+    public Price(ProductType productType, Profil profil) {
+        this(UUID.randomUUID(), null, productType, profil);
     }
 
-    public static Price of(ProductType productType, Profile profile) {
-        return new Price(productType, profile);
+    public static Price of(ProductType productType, Profil profil) {
+        return new Price(productType, profil);
     }
 
     public UUID getPriceId() {
@@ -44,19 +44,23 @@ public class Price {
         return productType;
     }
 
-    public Profile getProfile() {
-        return profile;
+    public Profil getProfil() {
+        return profil;
+    }
+
+    public PriceSnapshot snapshot() {
+        return new PriceSnapshot(priceId, tarif, productType, profil.age());
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Price price = (Price) o;
-        return Objects.equals(getPriceId(), price.getPriceId()) && Objects.equals(getTarif(), price.getTarif()) && getProductType() == price.getProductType() && Objects.equals(getProfile(), price.getProfile());
+        return Objects.equals(getPriceId(), price.getPriceId()) && Objects.equals(getTarif(), price.getTarif()) && getProductType() == price.getProductType() && Objects.equals(getProfil(), price.getProfil());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(priceId, tarif, productType, profile);
+        return Objects.hash(priceId, tarif, productType, profil);
     }
 }

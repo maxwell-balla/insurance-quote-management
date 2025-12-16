@@ -19,13 +19,13 @@ public class GetTarifUseCase implements UseCase<GetTarifRequest, GetTarifRespons
 
     @Override
     public GetTarifResponse execute(GetTarifRequest request) {
-        var price = Price.of(request.productType(), request.profile());
+        var price = Price.of(request.productType(), request.profil());
         var tariff = getTariff(price);
         return new GetTarifResponse(tariff);
     }
 
     private BigDecimal getTariff(Price price) {
-        return pricingRepo.getTarif(price.getProductType(), price.getProfile())
+        return pricingRepo.getTarif(price.getProductType(), price.getProfil())
                 .orElseThrow(() -> new TarifNotFoundException("Tariff Not found"));
     }
 }
