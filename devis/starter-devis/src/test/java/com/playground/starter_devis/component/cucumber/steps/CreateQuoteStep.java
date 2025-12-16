@@ -1,8 +1,8 @@
-package com.playground.starter_devis.cucumber.steps;
+package com.playground.starter_devis.component.cucumber.steps;
 
 import com.playground.adapter_devis.model.*;
 import com.playground.starter_devis.configuration.DataTableConfiguration.ExpectedField;
-import com.playground.starter_devis.stub.PricingClientStub;
+import com.playground.starter_devis.component.pricing.PricingClientStub;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;

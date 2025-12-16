@@ -26,9 +26,16 @@ public class CreateQuoteUseCase implements UseCase<CreateQuoteRequest, CreateQuo
     public CreateQuoteResponse execute(CreateQuoteRequest request) {
         return unitOfWork.execute(() -> {
             BigDecimal tarif = retrieveTariffication(request);
-            var quote = Quote.of(request, tarif);
-            var quoteId = quoteRepoPort.save(quote);
-            return CreateQuoteResponse.of(quoteId, quote);
+            var quote = Quote.create(
+                    request.customerId(),
+                    request.productType(),
+                    request.profil().age(),
+                    request.capital(),
+                    request.duration(),
+                    tarif
+            );
+            var savedSnapshot = quoteRepoPort.save(quote);
+            return CreateQuoteResponse.fromSnapshot(savedSnapshot);
         });
     }
 

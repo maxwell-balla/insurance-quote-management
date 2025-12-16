@@ -1,9 +1,8 @@
 package com.playground.core_devis.port.spi;
 
 import com.playground.core_devis.domain.model.Quote;
-
-import java.util.UUID;
+import com.playground.core_devis.domain.model.QuoteSnapshot;
 
 public interface QuoteRepositoryPort {
-    UUID save(Quote Quote);
+    QuoteSnapshot save(Quote quote);
 }

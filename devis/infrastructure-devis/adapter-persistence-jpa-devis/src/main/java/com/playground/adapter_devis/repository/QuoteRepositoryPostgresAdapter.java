@@ -1,25 +1,25 @@
 package com.playground.adapter_devis.repository;
 
-import com.playground.adapter_devis.mapper.QuoteJpaMapper;
+import com.playground.adapter_devis.entity.QuoteEntity;
 import com.playground.core_devis.domain.model.Quote;
+import com.playground.core_devis.domain.model.QuoteSnapshot;
 import com.playground.core_devis.port.spi.QuoteRepositoryPort;
 
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 @Component
 public class QuoteRepositoryPostgresAdapter implements QuoteRepositoryPort {
 
-    private final JpaQuoteRepository jpaQuoteRepository;
+    private final SpringDataQuoteRepository springDataQuoteRepository;
 
-    public QuoteRepositoryPostgresAdapter(JpaQuoteRepository jpaQuoteRepository) {
-        this.jpaQuoteRepository = jpaQuoteRepository;
+    public QuoteRepositoryPostgresAdapter(SpringDataQuoteRepository springDataQuoteRepository) {
+        this.springDataQuoteRepository = springDataQuoteRepository;
     }
 
     @Override
-    public UUID save(Quote Quote) {
-        var savedEntity = jpaQuoteRepository.save(QuoteJpaMapper.INSTANCE.mapToEntity(Quote));
-        return savedEntity.getId();
+    public QuoteSnapshot save(Quote quote) {
+        var entity = QuoteEntity.fromSnapshot(quote.snapshot());
+        var savedEntity = springDataQuoteRepository.save(entity);
+        return savedEntity.toSnapshot();
     }
 }

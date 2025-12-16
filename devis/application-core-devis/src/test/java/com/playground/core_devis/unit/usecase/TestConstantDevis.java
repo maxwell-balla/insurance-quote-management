@@ -1,4 +1,4 @@
-package com.playground.core_devis.utils;
+package com.playground.core_devis.unit.usecase;
 
 import java.math.BigDecimal;
 import java.util.UUID;

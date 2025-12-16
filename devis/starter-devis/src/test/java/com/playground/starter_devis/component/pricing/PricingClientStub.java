@@ -1,4 +1,4 @@
-package com.playground.starter_devis.stub;
+package com.playground.starter_devis.component.pricing;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.playground.starter_devis.configuration.WireMockServerConfiguration;

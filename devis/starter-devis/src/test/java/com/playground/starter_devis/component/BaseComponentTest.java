@@ -1,4 +1,4 @@
-package com.playground.starter_devis;
+package com.playground.starter_devis.component;
 
 import com.playground.starter_devis.configuration.TestContainersConfiguration;
 import com.playground.starter_devis.configuration.WireMockServerConfiguration;
@@ -9,7 +9,7 @@ import org.springframework.test.context.DynamicPropertySource;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import({TestContainersConfiguration.class, WireMockServerConfiguration.class})
-public abstract class BaseIntegrationTest {
+public abstract class BaseComponentTest {
 
     private static final String REALM_NAME = "iqmrealm";
     private static final String CLIENT_ID = "devis-service";

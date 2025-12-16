@@ -1,6 +1,6 @@
-package com.playground.starter_devis.cucumber;
+package com.playground.starter_devis.component.cucumber;
 
-import com.playground.starter_devis.cucumber.steps.CucumberSpringConfig;
+import com.playground.starter_devis.component.cucumber.steps.CucumberSpringConfig;
 import org.junit.platform.suite.api.ConfigurationParameter;
 import org.junit.platform.suite.api.IncludeEngines;
 import org.junit.platform.suite.api.Suite;
