@@ -18,19 +18,56 @@ Le systeme permet a un agent d'assurance de creer des devis pour ses clients. Le
 | **devis** | Creation et gestion des devis | PostgreSQL |
 | **pricing** | Calcul des tarifs | MongoDB |
 
-## Regles de gestion
+## Règles de gestion
 
 ### Devis (Quote)
-- Le **capital** doit etre strictement positif
-- La **duree** doit etre strictement positive (en jours)
-- L'**age** du client doit etre compris entre 18 et 90 ans
-- Le **tarif** doit etre strictement positif
-- Types de produits disponibles : `AUTO`, `HEALTH`
-- Statuts possibles : `CREATED`, `VALIDATED`, `EXPIRED`, `ERROR`
+
+**Capital positif** — Le capital assuré doit être strictement positif
+
+**Durée positive** — La durée du contrat doit être strictement positive (en jours)
+
+**Âge du client** — L'âge du client doit être compris entre 18 et 90 ans
+
+**Tarif positif** — Le tarif calculé doit être strictement positif
+
+**Types de produits** — Les produits disponibles sont : `AUTO`, `HEALTH`
+
+**Statuts du devis** — Un devis peut avoir les statuts : `CREATED`, `VALIDATED`, `EXPIRED`, `ERROR`
 
 ### Tarification
-- Si le service de pricing est disponible : utilisation du tarif calcule
-- Si le service de pricing est indisponible : application d'un tarif par defaut (fallback)
+
+**Calcul du tarif** — Si le service de pricing est disponible, le tarif calculé par ce service est utilisé
+
+**Tarif par défaut (fallback)** — Si le service de pricing est indisponible, un tarif par défaut est appliqué
+
+## Use Cases
+
+### Create Quote
+
+Permet à un agent d'assurance de créer un devis pour un client.
+
+#### Create Quote Workflow
+
+```java
+// 1. Clean Architecture: Request enters through Primary Adapter (Controller)
+@PostMapping("/v1/quote")
+public ResponseEntity<CreateQuoteResponse> createQuote(@RequestBody @Valid CreateQuoteRequest request)
+
+// 2. Clean Architecture: Request mapped to UseCase Request
+CreateQuoteRequest useCaseRequest = QuoteDtoMapper.INSTANCE.mapToCreateQuoteCmd(request);
+
+// 3. Clean Architecture: UseCase orchestrates the business logic
+createQuoteUseCase.execute(useCaseRequest);
+
+// 4. Hexagonal: Secondary Port (PricingPort) retrieves tariff from external service
+BigDecimal tarif = pricingPort.getTarif(productType, profil);
+
+// 5. DDD: Domain Model (Quote) enforces business rules
+Quote quote = Quote.create(customerId, productType, age, capital, duration, tarif);
+
+// 6. Clean Architecture: Secondary Port (QuoteRepositoryPort) abstracts persistence
+QuoteSnapshot savedSnapshot = quoteRepoPort.save(quote);
+```
 
 ## Architecture
 
