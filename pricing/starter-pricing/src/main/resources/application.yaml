@@ -1,0 +1,23 @@
+server:
+  port: 8081
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9090/realms/iqmrealm
+
+  mongodb:
+    port: 27017
+    host: localhost
+    database: price_db
+    username: price_user
+    password: price_pw
+
+logging:
+  level:
+    root: INFO
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+    com.playground: DEBUG
+    org.springframework.security: DEBUG

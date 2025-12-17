@@ -1,0 +1,46 @@
+quote:
+  pricing:
+    default-price: 500.00
+
+spring:
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/devis_db
+    username: devis_user
+    password: devis_pw
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: true
+
+  application:
+    name: devis-service
+
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: devis-service
+            client-secret: 3JEXplLQJ2fQRBG8UixMtGn5svMGLZFP
+            authorization-grant-type: client_credentials
+        provider:
+          keycloak:
+            token-uri: http://localhost:9090/realms/iqmrealm/protocol/openid-connect/token
+
+logging:
+  level:
+    org:
+      springframework: DEBUG
+      slf4j: DEBUG
+      testcontainers: DEBUG
+
+server:
+  port: 8080
+
+pricing:
+  url: http://localhost:8081

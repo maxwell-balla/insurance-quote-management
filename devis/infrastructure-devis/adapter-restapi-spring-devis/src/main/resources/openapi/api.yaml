@@ -1,0 +1,198 @@
+openapi: 3.0.3
+info:
+  title: API Quote
+  version: 1.0.0
+  description: Quote service
+
+servers:
+  - url: http://localhost:8080
+    description: Dev server
+
+paths:
+  /api/v1/quote:
+    post:
+      tags:
+        - Quotes
+      summary: Create Quote
+      operationId: createQuote
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateQuoteRequest'
+      responses:
+        '201':
+          description: Quote created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateQuoteResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+              examples:
+                validationError:
+                  value:
+                    type: "https://api.example.com/errors/validation-error"
+                    title: "Validation Error"
+                    status: 400
+                    detail: "Capital must be greater than 0"
+                    instance: "/api/quote"
+        '404':
+          description: Customer not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+              examples:
+                customerNotFound:
+                  value:
+                    type: "https://api.example.com/errors/customer-not-found"
+                    title: "Customer Not Found"
+                    status: 404
+                    detail: "Customer with ID 123e4567-e89b-12d3-a456-426614174000 does not exist"
+                    instance: "/api/quote"
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+              examples:
+                internalError:
+                  value:
+                    type: "https://api.example.com/errors/internal-error"
+                    title: "Internal Server Error"
+                    status: 500
+                    detail: "An unexpected error occurred"
+                    instance: "/api/quote"
+
+components:
+  schemas:
+    CreateQuoteRequest:
+      type: object
+      required:
+        - customerId
+        - productType
+        - profil
+        - capital
+        - duration
+      properties:
+        customerId:
+          type: string
+          format: uuid
+          description: Customer unique identifier
+        productType:
+          $ref: '#/components/schemas/ProductType'
+        profil:
+          $ref: '#/components/schemas/Profil'
+        capital:
+          type: number
+          format: double
+          minimum: 0
+          exclusiveMinimum: true
+          description: Capital amount
+        duration:
+          type: integer
+          format: int32
+          minimum: 1
+          description: Duration in days
+
+    CreateQuoteResponse:
+      type: object
+      required:
+        - quoteId
+        - capital
+        - duration
+        - status
+        - customerId
+        - productType
+        - tarif
+      properties:
+        quoteId:
+          type: string
+          format: uuid
+          description: Unique quote identifier
+        capital:
+          type: number
+          format: double
+          description: Capital amount
+        duration:
+          type: integer
+          format: int32
+          description: Duration in months or years
+        status:
+          $ref: '#/components/schemas/Status'
+        customerId:
+          type: string
+          format: uuid
+          description: Customer identifier
+        productType:
+          $ref: '#/components/schemas/ProductType'
+        tarif:
+          type: string
+          format: decimal
+          description: Calculated tariff
+
+    ProductType:
+      type: string
+      enum:
+        - AUTO
+        - HEALTH
+      description: Type of insurance product
+
+    Profil:
+      type: object
+      required:
+        - age
+      properties:
+        age:
+          type: integer
+          format: int32
+          minimum: 18
+          maximum: 120
+          description: Customer age
+
+    Status:
+      type: string
+      enum:
+        - CREATED
+        - VALIDATED
+        - EXPIRED
+        - ERROR
+      description: Quote status
+
+    ProblemDetail:
+      type: object
+      required:
+        - type
+        - title
+        - status
+      properties:
+        type:
+          type: string
+          format: uri
+          description: URI reference that identifies the problem type
+          example: "https://api.example.com/errors/validation-error"
+        title:
+          type: string
+          description: Short, human-readable summary of the problem
+          example: "Validation Error"
+        status:
+          type: integer
+          format: int32
+          description: HTTP status code
+          example: 400
+        detail:
+          type: string
+          description: Human-readable explanation specific to this occurrence
+          example: "Capital must be greater than 0"
+        instance:
+          type: string
+          format: uri
+          description: URI reference that identifies the specific occurrence
+          example: "/api/quote"

@@ -1,0 +1,22 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.playground</groupId>
+        <artifactId>pricing</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>infrastructure-pricing</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>infrastructure-pricing</name>
+
+    <modules>
+        <module>adapter-persistence-nosql-pricing</module>
+        <module>adapter-restapi-pricing-spring</module>
+        <module>adapter-auth-keycloak-validator</module>
+    </modules>
+
+</project>

@@ -1,0 +1,90 @@
+openapi: 3.0.3
+info:
+  title: API Pricing
+  version: 1.0.0
+  description: Pricing Service
+
+servers:
+  - url: http://localhost:8081/api/v1
+
+paths:
+  /pricing:
+    get:
+      tags:
+        - Pricing
+      summary: Get Tarif
+      operationId: getTarif
+      parameters:
+        - name: productType
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/ProductType'
+          description: Product Type (AUTO or HEALTH)
+        - name: age
+          in: query
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: Age of profile (need to be positif)
+      responses:
+        '200':
+          description: Get Tarif Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPricingResponse'
+        '400':
+          description: Validation Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '500':
+          description: Internal or Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+
+components:
+  schemas:
+    ProductType:
+      type: string
+      enum:
+        - AUTO
+        - HEALTH
+
+    GetPricingResponse:
+      type: object
+      properties:
+        tarif:
+          type: number
+          format: decimal
+          example: 123.45
+
+    ProblemDetails:
+      type: object
+      description: Format standard RFC 7807 pour les erreurs
+      properties:
+        type:
+          type: string
+          format: uri
+          description: URI identifiant le type de problème
+        title:
+          type: string
+          description: Résumé lisible du problème
+        status:
+          type: integer
+          description: Code HTTP associé
+        detail:
+          type: string
+          description: Détails lisibles par l’humain
+        instance:
+          type: string
+          format: uri
+          description: URI de la ressource concernée
+      required:
+        - title
+        - status
