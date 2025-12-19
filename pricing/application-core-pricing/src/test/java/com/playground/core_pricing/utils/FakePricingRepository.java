@@ -3,9 +3,9 @@ package com.playground.core_pricing.utils;
 import com.playground.core_pricing.domain.model.Price;
 import com.playground.core_pricing.domain.model.ProductType;
 import com.playground.core_pricing.domain.model.Profil;
+import com.playground.core_pricing.domain.model.TarifQuoteView;
 import com.playground.core_pricing.port.spi.PricingRepositoryPort;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -18,12 +18,12 @@ public class FakePricingRepository implements PricingRepositoryPort {
     private final Map<UUID, Price> priceByIds = new HashMap<>();
 
     @Override
-    public Optional<BigDecimal> getTarif(ProductType productType, Profil profil) {
+    public Optional<TarifQuoteView> getTarif(ProductType productType, Profil profil) {
         return priceByIds.values().stream()
                 .filter(price -> price.getProductType().equals(productType))
                 .filter(price -> price.getProfil().equals(profil))
                 .findFirst()
-                .map(Price::getTarif);
+                .map(price -> new TarifQuoteView(price.getTarif()));
     }
 
     public void feedPrice() {

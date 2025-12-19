@@ -9,11 +9,12 @@ spring:
           issuer-uri: http://localhost:9090/realms/iqmrealm
 
   mongodb:
-    port: 27017
     host: localhost
+    port: 27017
     database: price_db
     username: price_user
     password: price_pw
+    authentication-database: price_db
 
 logging:
   level:
