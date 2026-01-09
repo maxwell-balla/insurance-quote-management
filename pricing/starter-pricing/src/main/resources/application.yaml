@@ -22,3 +22,19 @@ logging:
     org.springframework.data.mongodb.core.MongoTemplate: DEBUG
     com.playground: DEBUG
     org.springframework.security: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
